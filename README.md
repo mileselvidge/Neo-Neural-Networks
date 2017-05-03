@@ -1,9 +1,9 @@
-# Neo
-### _A basic Java Matrix Operations Library_
+# Neo Neural Networks (NNN)
+### _Neural Networks and Matrix Mathematics for Java_
 
-Neo is a mathematic library for Java containing a few useful and common matrix operations for a matrix datatype. It is written entirely from scratch and can be implemented into any project which requires large matrix operations. Most significantly, Neo was written with the intent of being used for my personal Machine Learning projects in the Processing IDE.
+Neo is a basic machine learning library for Java written from the ground up. Neo has the ability to cretae and operate on large abstract matrices, including powerful operations like the matrix power and inverse functions. Central to Neo is a easy and effective way to write three layered Artificial Neural Networks that can easily be created, trained and queried in any Java project, and has been adapted with the Processing IDE in mind. 
 
-I intend to take this project further, realsing a further Machine Learning framework, specifically for Java and the Processing Environment. I am 17 years old and eager to gain insight and expertise from others, so any contributions to this project is welcomed! 
+This project is just beginning and I intend to perusing it much further. Many of the concepts I explored whilst creating this project are new and exciting to me as I am 17 years old. Any input, suggests or help will be welcome!
 
 ***
 
@@ -14,14 +14,16 @@ The 1999 Matrix introduced many of us into the beautiful term 'Matrix' for the f
 ***
 
 ## Functionality
+* Create three layered artificial neural networks using the `NeuralNetwork` datatype.
+* Train (back propagate) neural networks with any number of inputs, outputs and hidden layers.
+* Query neural networks for predictions from input data.
+* Make use of the `sigmoid` and `tanh` functions.
 * Create abstract Matrices or Vectors using the `JMatrix` datatype. 
 * Initilize a variety of different common matrices, such as the null-matrix, ones-matrix and identity matrix.
 * Perform arithmetic operations such as adding, subtracting, multiplying, and scaling matrices.
 * Raise a matrix to any integer power, calculate the inverse, or any negetive integer power.
-* Calculate the determinant and cofactors of a matrix.
-* Calculate the transpose of a matrix and calculate sub-matrices.
-* Append two matrices by row or by column.
-* Determine whether a `JMatrix` is a vector and Vectorize a matrix.
+* Calculate the determinant, transpose and cofactors of a matrix.
+* Append two matrices by row or by column or create a sub-matrix.
 * Dot-multiply each element of matrices of the same dimention. 
 * Calculate the dot-product of two vectors.
 * Display a matrix to the console.
@@ -31,24 +33,69 @@ The 1999 Matrix introduced many of us into the beautiful term 'Matrix' for the f
 
 ## Repository contents 
 Currently the repository contains:
-1. The source code for the Matrix Operations library, Neo, named `JMatrix`.
+1. The source code for the Neo Neural Network (NNN) library, Neo, named `Neo`.
 2. The exported jar file for the Neo library.
-3. A ready-to-go processing library folder, `Neo`.
-4. A basic example of Neo in action, `Processing-Neo-Testing`, which contains a trivial linear regression with gradient descent/the normal equation problem (likely to be poorly optimised), written in Processing.
-
-**Note: due to the poor optimisation of the inverse method, the normal equation solution to the example listed above is slow and unresponsive (the matrix is 47x47). I would recommend just testing gradient descent until updated.**
+3. A ready-to-go processing library folder, `Neo (Processing Library)`.
+4. A basic example of Neo in action, `Examples (Processing)/Testing_Neo`, which contains the MNIST handwriting classification problem solved using the Neo Neural Network library and MNIST dataset (referenced below). Inspired by Traiq Rashid and Dan Shiffman (referenced below).
 
 ### Install: Processing
 1. Install the `Neo` folder from the repo.
 2. Place the folder in the libraries folder within your Processing folder (likely in the install location, mine was in my documents).
 3. Whilst in Processing click on `Sketch` and then `Import Library` followed by `Neo`.
-  - Alternatively, import `net.mileselvidge.neo.*; ` at the top of your code.
+  - Alternatively, import `net.mileselvidge.neo.*; ` at the top of your source code.
 
 ***
 
-## Usage
-**Note: In this implementation matrices are 1 indexed** 
+## Usage (Neural Networks)
+Creating an artificial neural network in Java with Neo (NNN) is quick and simple and may be done in a few lines of code. For an applied example with visuals see the Examples folder in the repository. 
 
+**NOTE: all operations and functions are written for using the double data type within matricies for the largest range of possible values.**
+
+### Creating a Neural Network
+```java
+// Create a neural network with a specific number of input, hidden and output nodes/neurons.
+NeuralNetwork nn = new NeuralNetwork(inputNodes, hiddenNodes, outputNodes, learningRate, "sigmoid"); 
+
+// NOTE: The fifth parameter refers to the activation function and may be either "sigmoid" or "tanh"
+
+// EG: 
+NeuralNetwork tanhNet = new NeuralNetwork(10, 20, 5, 0.1, "tanh");
+// Tanh Neural Network with: 10 input nodes, 20 hidden nodes, 5 output nodes, a learning rate of 0.1
+
+// Intialise a NeuralNetwork through copying another
+NeuralNetwork nn2 = nn.copy();
+```
+
+### Using a Neural Network
+It is even simple to train your neural network and and query it for outputs!
+```java
+// Training a neural network
+for(int i = 0; i < inputTrainingData.length; i++){  
+  // Loop through every element of a two dimensional array of training data
+  // The neural network train function takes two arrays of double values as inputs.
+  // These correspond to input training data and the target values the NN is to achive.
+  // Through back-propogation, the weights of the NN are adjucted to fit the data.
+  // The input training data must be the same length as the number of input nodes, the target must be the same length as the output node size.
+  
+  nn.train(inputTrainingData[i], targetTrainingData[i]);
+}
+
+// Test a neural network with a query
+// Example: 
+double[] inputs = new double[4] {1.0, 2.0, -1.0, 2};
+
+double[] outputs = nn.query(inputs); // Returns the array of probabilities for the output nodes
+
+
+NOTE: for optimal usage of the Neo Neural Networks library ensure all data is normalized.
+```
+
+***
+
+### Usage (Matrices)
+This is a little more barebones than the Neural Network implementation. Using Matrices in your program should be fairly simple although many exceptions, while handled, might occour or need to be catered for if the dimensions of Matrices operated on is not thought out.
+
+**Note: In this implementation matrices are 0 indexed** 
 ### Creating a Matrix: 
 There are a few different ways to initilize a matrix (of dimentions m x n).
 ```java
@@ -138,16 +185,30 @@ JMatrix C = JMatrix.append(A, B, 1); // Example: append the contents of B to the
 
 ***
 
+## Example in Processing
+For a more detailed and involved look into how to use Neo Neural Networks (NNN) look no further than the implementation in the Processing IDE to solve the MNIST handwriting letters problem. There is a nice visual (inspired by Dan Shiffman) to watch the program in action and statistics (performance, epochs etc) are printed to the console.
+
+I intend on writing many more examples in the near future to showcase NNN in action!
+![alt text](http://i.imgur.com/3apd0zk.png "GUI training in action")
+![alt text](http://i.imgur.com/pfqlaPB.png "Console output while in training")
+
+***
+
 ## Todo
+* Add functionality for deeper neural networks with more hidden layers.
 * Optimise the inverse function as this is particularly slow.
 * Optimise multiplication, like above, perhaps using the `Strassen Algorithm`.
 
 ***
 
 ## References
+* Tariq Rashid's: "Make Your Own Neural Network"
+  - https://github.com/makeyourownneuralnetwork/
+* Dan Shiffman's "Nature of Code 2: Intelligence and Learning (Chapter 6 Bonus)
+  - https://github.com/shiffman/NOC-S17-2-Intelligence-Learning/tree/master/week6bonus-reinforcement-neuroevolution
 * Wikipedia, Matrix: https://en.wikipedia.org/wiki/Matrix_(mathematics)
 * The Strassen Algorithm: https://en.wikipedia.org/wiki/Strassen_algorithm
 
 
 
-# Neo-Neural-Network
+Inspiration for the visuals comes from _Dan Shiffman's "Nature of Code 2: Intelligence and Learning" (Chapter 6)_ and concept, problem and data from _Tariq Rashid's "Make Your Own Neural Network"_.

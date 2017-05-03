@@ -190,7 +190,9 @@ For a more detailed and involved look into how to use Neo Neural Networks (NNN) 
 
 I intend on writing many more examples in the near future to showcase NNN in action!
 ![alt text](http://i.imgur.com/3apd0zk.png "GUI training in action")
-![alt text](http://i.imgur.com/pfqlaPB.png "Console output while in training")
+![alt text](http://i.imgur.com/pfqlaPB.png "Console output while in training (2 hours)")
+
+Inspiration for the visuals comes from _Dan Shiffman's "Nature of Code 2: Intelligence and Learning" (Chapter 6)_ and concept, problem and data from _Tariq Rashid's "Make Your Own Neural Network"_.
 
 ***
 
@@ -211,4 +213,3 @@ I intend on writing many more examples in the near future to showcase NNN in act
 
 
 
-Inspiration for the visuals comes from _Dan Shiffman's "Nature of Code 2: Intelligence and Learning" (Chapter 6)_ and concept, problem and data from _Tariq Rashid's "Make Your Own Neural Network"_.

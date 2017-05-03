@@ -18,7 +18,7 @@ The 1999 Matrix introduced many of us into the beautiful term 'Matrix' for the f
 * Train (back propagate) neural networks with any number of inputs, outputs and hidden layers.
 * Query neural networks for predictions from input data.
 * Make use of the `sigmoid` and `tanh` functions.
-* Create abstract Matrices or Vectors using the `JMatrix` datatype. 
+* Create abstract Matrices or Vectors using the `NMatrix` datatype. 
 * Initilize a variety of different common matrices, such as the null-matrix, ones-matrix and identity matrix.
 * Perform arithmetic operations such as adding, subtracting, multiplying, and scaling matrices.
 * Raise a matrix to any integer power, calculate the inverse, or any negetive integer power.
@@ -100,19 +100,19 @@ This is a little more barebones than the Neural Network implementation. Using Ma
 There are a few different ways to initilize a matrix (of dimentions m x n).
 ```java
 // 1. Create a matrix from a two dimentional array of double values.
-JMatrix M = new JMatrix(new double[][] {{10, 2, -4.2}}, {2, 2.2, 3}, {-1, 3, 4}});
+NMatrix M = new NMatrix(new double[][] {{10, 2, -4.2}}, {2, 2.2, 3}, {-1, 3, 4}});
 
 // 2. Create an empty m x n matrix containing zeros.
-JMatrix N = new JMatrix(3, 2); // Creates a 3x2 null matrix
+NMatrix N = new NMatrix(3, 2); // Creates a 3x2 null matrix
 
 // 3. Create an identity matrix of dimention n x n
-JMatrix P = new JMatrix(10); 
+NMatrix P = new NMatrix(10); 
 
 // 4. Create a matrix from another matrix.
-JMatrix Q = new JMatrix(P);
+NMatrix Q = new NMatrix(P);
 
 // ... or just copy an existing matrix.
-JMatrix Q = P.copy();
+NMatrix Q = P.copy();
 
 // Set or get values in a matrix
 double topCorner = M.get(0, 0); // Returns the top element of the matrix
@@ -121,32 +121,32 @@ M.set(1, 2, 3.1415); // M(1,2) = 3.1415
 ```
 Additionally, you may create one of the following matrices using any of the following static methods:
 ```java
-JMatrix I = JMatrix.identity(3); // Creates a 3x3 identity matrix.
-JMatrix Zeros = JMatrix.nullMatrix(4,1); Creates a 4-dimentional null vector.
-JMatrix Ones = JMatrix.onesMatrix(2,10); // Creates a 2x10 ones matrix.
-JMatrix Random = JMatrix.random(100,100); // Creates an 100x100 matrix containing random doubles (-1 to 1)!
+NMatrix I = NMatrix.identity(3); // Creates a 3x3 identity matrix.
+NMatrix Zeros = NMatrix.nullMatrix(4,1); Creates a 4-dimentional null vector.
+NMatrix Ones = NMatrix.onesMatrix(2,10); // Creates a 2x10 ones matrix.
+NMatrix Random = NMatrix.random(100,100); // Creates an 100x100 matrix containing random doubles (-1 to 1)!
 ```
 
 ### Arithmetic Operations on a Matrix:
 Examples:
 ```java
 // Simple
-JMatrix C = JMatrix.add(A, B); // C = A+B (works only if A and B have the same dimention).
-JMatric D = JMatrix.subtract(A,C); // D = A-C ('')
+NMatrix C = NMatrix.add(A, B); // C = A+B (works only if A and B have the same dimention).
+NMatrix D = NMatrix.subtract(A,C); // D = A-C ('')
 
 // Matrix-Matrix multiplication (Note: for this project, Vectors are included as matrices). 
-JMatrix E = JMatrix.multiply(A,D); // E = A*D (standard rules of matrix multiplication, the number of columns in A must equal the number of rows in D for it to be possible; the output matrix, E, will have the A's number of rows and D's number of columns).
+NMatrix E = NMatrix.multiply(A,D); // E = A*D (standard rules of matrix multiplication, the number of columns in A must equal the number of rows in D for it to be possible; the output matrix, E, will have the A's number of rows and D's number of columns).
 
 // Scalar-Matrix multiplication
-JMatrix X = JMatrix.multiply(3, Y); // X = 3Y
+NMatrix X = NMatrix.multiply(3, Y); // X = 3Y
 
-JMatrix Z = JMatrix.dotMultiply(X, Y); // Only works for identical dimentions, multiplies each element of one matrix with its corresponding element in another.
+NMatrix Z = NMatrix.dotMultiply(X, Y); // Only works for identical dimentions, multiplies each element of one matrix with its corresponding element in another.
 
 // Powers and inverse matrices (only works on square matrices).
-M = JMatrix.pow(M, 3); // M^3
+M = NMatrix.pow(M, 3); // M^3
 M = M.pow(3); // Alternative writing
 
-R = JMatrix.inv(M); // R = M^-1
+R = NMatrix.inv(M); // R = M^-1
 R = M.inv(); // Alternative writing
 
 S = M.pow(-3); // S = M^-3
@@ -155,19 +155,19 @@ S = M.pow(-3); // S = M^-3
 ### Matrix features
 ```java
 double det = A.det(); // The determinant of A.
-JMatrix Atranspose = A.transpose(); // The transpose matrix of A.
-JMatrix Acofactor = JMatrix.cofactor(A); // Return the cofactor of A.
-JMatrix Asub = JMatrix.subMatrix(A, 0, 0); // Returns a matrix which exludes the column 0 and row 0.
+NMatrix Atranspose = A.transpose(); // The transpose matrix of A.
+NMatrix Acofactor = JMatrix.cofactor(A); // Return the cofactor of A.
+NMatrix Asub = JMatrix.subMatrix(A, 0, 0); // Returns a matrix which exludes the column 0 and row 0.
 
-double dot JMatrix.dot(x, y); // Compute the dot product of two vectors.
+double dot NMatrix.dot(x, y); // Compute the dot product of two vectors.
 
 int[] dimention = A.dimension(); // Returns the dimension of a matrix [number of rows, number of columns] or [number of rows] for a vector.
 
 A.isSquare(); // Returns whether A is a square matrix.
 A.isSingular(); // Returns whether A is a singular matrix.
 A.isVector(); // Returns whether A is a vector.
-JMatrix.canMultiply(A, B); // Returns whether two matracies can multiply.
-JMatrix.isSameDimention(A, B); // Returns whether two matrices are of the same dimention.
+NMatrix.canMultiply(A, B); // Returns whether two matracies can multiply.
+NMatrix.isSameDimention(A, B); // Returns whether two matrices are of the same dimention.
 ```
 
 ### Output functionality
@@ -180,7 +180,7 @@ String matrixString = M.toString(); // A large string containing the matrix
 // The option parameter can either be 1 or 2.
 // 1 = Append Rows (Horizontally)
 // 2 = Append Columns (Vertically)
-JMatrix C = JMatrix.append(A, B, 1); // Example: append the contents of B to the end of A vertically.
+NMatrix C = NMatrix.append(A, B, 1); // Example: append the contents of B to the end of A vertically.
 ```
 
 ***

@@ -1,5 +1,7 @@
 package net.mileselvidge.neo;
 
+import java.util.Random;
+
 /*
  * Neo: Java Machine Learning Library
  * A Machine Learning library for Java containing Neural Networks and Matrix Mathematics
@@ -31,5 +33,15 @@ public class NMath {
 	// Hyperbolic tan derivative 
 	public static final double dtanh(double z) {
 		return 1.0 / (Math.pow(Math.cosh(z), 2));
+	}
+	
+	// Genetic Algorithms: Mutation function
+	public static final double mutate(double z) {
+		if(new Random().nextDouble() > 0.9) { // Arbitrary frequency
+			double offset = 0.1 - (new Random().nextDouble() / 50.0); // +/- 0.1 (Arbitrary)
+			return Math.abs(z + offset) > 1 ? new Random().nextGaussian() : z + offset;
+		} else {
+			return z;
+		}
 	}
 }

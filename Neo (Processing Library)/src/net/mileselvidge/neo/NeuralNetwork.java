@@ -18,6 +18,7 @@ public class NeuralNetwork {
 	// Functions for calculating activation and derivatives
 	private Method activation;
 	private Method derivative;
+	private Method mut;
 	
 	// Weight Matrices
 	private NMatrix[] weights;
@@ -51,6 +52,7 @@ public class NeuralNetwork {
 		// Initialise the activation/derivative functions
 		NMath math = new NMath();
 		try {
+			mut = math.getClass().getMethod("mutate", Double.TYPE);
 			if(activationType.toLowerCase() == "tanh"){
 				activation = math.getClass().getMethod("tanh", Double.TYPE);
 				derivative = math.getClass().getMethod("dtanh", Double.TYPE);
@@ -99,7 +101,7 @@ public class NeuralNetwork {
 	// Train the neural network
 	public void train(double[] inputsArr, double[] targetArr) {
 		try {
-			// Turn inputs & targets in matrices
+			// Turn inputs & targets as matrices
 			NMatrix inputs = NMatrix.fromArray(inputsArr);
 			NMatrix targets = NMatrix.fromArray(targetArr);
 		
@@ -141,4 +143,17 @@ public class NeuralNetwork {
 			e.printStackTrace();
 		}
 	}
+	
+	// Return dimensions of neural network
+	public NMatrix[] getNetwork() {
+		return weights;	
+	}
+	
+	public void mutate(){
+		// For neural networks which involve genetic evolution I implemented a very simple function
+		for(int i = 0; i < this.weights.length; i++){
+			this.weights[i].map(this, mut);
+		}
+	}
+	
 }

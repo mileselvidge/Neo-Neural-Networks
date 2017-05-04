@@ -1,0 +1,5 @@
+package net.mileselvidge.neo;
+
+public class DeepNeuralNetwork {
+
+}

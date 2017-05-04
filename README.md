@@ -47,23 +47,25 @@ Currently the repository contains:
 ***
 
 ## Usage (Neural Networks)
-Creating an artificial neural network in Java with Neo (NNN) is quick and simple and may be done in a few lines of code. For an applied example with visuals see the Examples folder in the repository. 
+Creating an artificial neural network in Java with Neo (NNN) is quick and simple and may be done in a few lines of code. For an applied example with visuals see the Examples folder in the repository. Neural networks can have multiple layers of hidden nodes!
 
 **NOTE: all operations and functions are written for using the double data type within matricies for the largest range of possible values.**
 
 ### Creating a Neural Network
 ```java
 // Create a neural network with a specific number of input, hidden and output nodes/neurons.
-NeuralNetwork nn = new NeuralNetwork(inputNodes, hiddenNodes, outputNodes, learningRate, "sigmoid"); 
+NeuralNetwork nn = new NeuralNetwork(inputNodes, hiddenNodes[], outputNodes, learningRate, "sigmoid"); 
 
 // NOTE: The fifth parameter refers to the activation function and may be either "sigmoid" or "tanh"
 
 // EG: 
-NeuralNetwork tanhNet = new NeuralNetwork(10, 20, 5, 0.1, "tanh");
-// Tanh Neural Network with: 10 input nodes, 20 hidden nodes, 5 output nodes, a learning rate of 0.1
+NeuralNetwork tanhNet = new NeuralNetwork(10, new double[] {20, 10}, 5, 0.1, "tanh");
+// Tanh Neural Network with: 10 input nodes, 20, 10 hidden nodes, 5 output nodes, a learning rate of 0.1
 
 // Intialise a NeuralNetwork through copying another
 NeuralNetwork nn2 = nn.copy();
+
+NMatrix[] hiddenWeights = nn.getNetwork(); // TODO: Change this to return actual hidden layers for a query!
 ```
 
 ### Using a Neural Network
@@ -196,8 +198,16 @@ Inspiration for the visuals comes from _Dan Shiffman's "Nature of Code 2: Intell
 
 ***
 
+## Updates
+
+### 04/05/17
+1. Added support for Artificial Neural Networks with multiple hidden layers.
+2. Added a few genetic/evolutionary algorithm functions for the weights of the NN, these are poorly optimised and still a WIP; thus are not documented.
+3. Added a new example of AI Flappy Bird with a NN at the core to show off new multi-layered functionalities.
+
+***
+
 ## Todo
-* Add functionality for deeper neural networks with more hidden layers.
 * Optimise the inverse function as this is particularly slow.
 * Optimise multiplication, like above, perhaps using the `Strassen Algorithm`.
 

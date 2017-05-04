@@ -187,7 +187,7 @@ NMatrix C = NMatrix.append(A, B, 1); // Example: append the contents of B to the
 
 ***
 
-## Example in Processing
+## Example in Processing
 For a more detailed and involved look into how to use Neo Neural Networks (NNN) look no further than the implementation in the Processing IDE to solve the MNIST handwriting letters problem. There is a nice visual (inspired by Dan Shiffman) to watch the program in action and statistics (performance, epochs etc) are printed to the console.
 
 I intend on writing many more examples in the near future to showcase NNN in action!

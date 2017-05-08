@@ -124,7 +124,7 @@ M.set(1, 2, 3.1415); // M(1,2) = 3.1415
 Additionally, you may create one of the following matrices using any of the following static methods:
 ```java
 NMatrix I = NMatrix.identity(3); // Creates a 3x3 identity matrix.
-NMatrix Zeros = NMatrix.nullMatrix(4,1); Creates a 4-dimentional null vector.
+NMatrix Zeros = NMatrix.nullMatrix(4,1); // Creates a 4-dimentional null vector.
 NMatrix Ones = NMatrix.onesMatrix(2,10); // Creates a 2x10 ones matrix.
 NMatrix Random = NMatrix.random(100,100); // Creates an 100x100 matrix containing random doubles (-1 to 1)!
 ```

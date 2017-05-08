@@ -187,6 +187,15 @@ NMatrix C = NMatrix.append(A, B, 1); // Example: append the contents of B to the
 
 ***
 
+## Flappy Bird
+This is another ongoing project (which I will publish a seperate repository for this shortly). I decided to see whether I could apply a genetic aglorithm, which mutates the weights on a neural network; and the best neural networks are selected after a generation of "birds" based on a fitness function.
+
+This example runs in Processing and can be found within the repository "Examples" directory. It is fairly simple to use. Buttons can toggle the performance of the best bird of all generations and generating new generations and buttons for alterating the speed of the simulation.
+
+Currently, birds are generated with Neural Networks with a random number (between 1 and 3) of layers and a random number (4-12) of nodes in each layer. The best birds are selected at the end of a generation based on their distance played and energy expended (number of flaps). Entirely new birds are also generated between generations. Birds are coloured based on their Neural Network's complexity.
+
+![alt text](http://i.imgur.com/UV7IXV5.png "Flappy AI with Neo Neural Networks")
+
 ## Example in Processing
 For a more detailed and involved look into how to use Neo Neural Networks (NNN) look no further than the implementation in the Processing IDE to solve the MNIST handwriting letters problem. There is a nice visual (inspired by Dan Shiffman) to watch the program in action and statistics (performance, epochs etc) are printed to the console.
 
@@ -204,6 +213,9 @@ Inspiration for the visuals comes from _Dan Shiffman's "Nature of Code 2: Intell
 1. Added support for Artificial Neural Networks with multiple hidden layers.
 2. Added a few genetic/evolutionary algorithm functions for the weights of the NN, these are poorly optimised and still a WIP; thus are not documented.
 3. Added a new example of AI Flappy Bird with a NN at the core to show off new multi-layered functionalities.
+
+### 08/05/17
+1. Implemented an example of my Artifical Neural Network in Processing with neural evolution to produce an AI to play the popular game "Flappy Bird".
 
 ***
 

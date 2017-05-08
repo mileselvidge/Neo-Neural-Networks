@@ -38,7 +38,7 @@ public class NMath {
 	// Genetic Algorithms: Mutation function
 	public static final double mutate(double z) {
 		if(new Random().nextDouble() > 0.9) { // Arbitrary frequency
-			double offset = 0.05 - (new Random().nextDouble() / 10.0); // +/- 0.1 (Arbitrary)
+			double offset = 0.1 - (new Random().nextDouble() / 50.0); // +/- 0.1 (Arbitrary)
 			return Math.abs(z + offset) > 1 ? new Random().nextGaussian() : z + offset;
 		} else {
 			return z;

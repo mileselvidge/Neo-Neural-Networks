@@ -10,7 +10,7 @@ class Pipe {
   float speed;
   
   Pipe(){
-    this.spacing = random(120, birdCanvas.height / 2);
+    this.spacing = random(120, birdCanvas.height / 2.5);
     this.center = random(spacing, birdCanvas.height - spacing);
     this.top = center - spacing / 2;
     this.bottom = birdCanvas.height - (center + spacing / 2);

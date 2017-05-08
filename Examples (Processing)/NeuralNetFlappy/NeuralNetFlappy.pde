@@ -4,32 +4,45 @@ import java.util.Collections;
 // Flappy Bird Artificial Neural Network Example
 // Miles Elvidge, 17, 04/05/17
 
-int populationSize = 250;
+int populationSize = 300;
+Button SpeedBtn, plusSpeed, minusSpeed, bestBtn;
 
 ArrayList<Bird> activeBirds;
 ArrayList<Bird> allBirds;
 ArrayList<Pipe> pipes;
-Bird bestBird;
+Bird bestEver;
 
 int counter = 0;
 int generation = 0;
+ArrayList<Integer> scoreHistory = new ArrayList<Integer>();
 
-int speed = 1;
+int speed = 2;
 int highscore = 0;
 PGraphics birdCanvas;
 
 boolean runBest = false;
 
 void setup() {
-  size(840, 500);
+  size(860, 500);
+  textAlign(CENTER);
   birdCanvas = createGraphics(600,400);
-  reset();
+  SpeedBtn = new Button("Speed: ",162, height-70,90,50);
+  bestBtn = new Button("Run Best",15,height-70,90,50);
+  plusSpeed = new Button("+",135,height-70,25,50);
+  plusSpeed.c = color(50,200,100);
+  minusSpeed = new Button("-",107,height-70,25,50);
+  minusSpeed.c = color(255,50,100);
+ 
+  resetAll();
 }
 
-void reset(){
+void resetAll(){
   activeBirds = new ArrayList<Bird>();
   allBirds = new ArrayList<Bird>();
   pipes = new ArrayList<Pipe>();
+  highscore = 0;
+  scoreHistory = new ArrayList<Integer>();
+  scoreHistory.add(0);
   
   for(int i = 0; i < populationSize; i++){
     Bird b = new Bird();
@@ -37,19 +50,17 @@ void reset(){
     allBirds.add(b);
   }
   
-  bestBird = activeBirds.get(0);
+  bestEver = activeBirds.get(0);
 }
 
 void toggleState(){
   runBest = !runBest;
   if(runBest){
     resetGame();
-    bestBird.score = 0;
-    bestBird.y = height/2;
-    println("Playing best!"); // TODO: add label to display state
+    bestBtn.text = "Generate";
   } else {
     nextGeneration();
-    println("Training birds!");
+    bestBtn.text = "Run Best";
   }
 }
 
@@ -71,10 +82,10 @@ void draw() {
     // Determine whether it is just the best bird or all birds
     if(runBest){
       // Display on the best bird
-      bestBird.think(pipes);
-      bestBird.update();
+      bestEver.think(pipes);
+      bestEver.update();
       for(int j = 0; j < pipes.size(); j++){
-        if(pipes.get(j).hits(bestBird)) {
+        if(pipes.get(j).hits(bestEver)) {
           // Bird hit pipe
           resetGame();
           break;
@@ -107,21 +118,21 @@ void draw() {
   // Determine the best current bird
   int temphs = 0; // Temporary high score
   if(!runBest){
-    Bird tempBestBird = null;
+    Bird tempbestEver = null;
     for(int i = 0; i < activeBirds.size(); i++){
       int s = activeBirds.get(i).score;
       if(s > temphs){
         temphs = s;
-        tempBestBird = activeBirds.get(i);
+        tempbestEver = activeBirds.get(i);
       }
     }
     
     if(temphs > highscore){
-      bestBird = tempBestBird;
+      bestEver = tempbestEver;
       highscore = temphs;
     }
   } else {
-    int tempHighscore = bestBird.score;
+    int tempHighscore = bestEver.score;
     if(tempHighscore > highscore){
       highscore = tempHighscore;
     }
@@ -133,7 +144,7 @@ void draw() {
   }
   
   if(runBest) {
-    bestBird.show(birdCanvas);
+    bestEver.show(birdCanvas);
   } else {
     for(Bird b : activeBirds){
       b.show(birdCanvas);
@@ -144,13 +155,19 @@ void draw() {
   }
   birdCanvas.endDraw();
   image(birdCanvas, 0, 0);
+  scoreHistory.set(generation, counter); // For current mean value
   displayStats();
-  println(bestBird.score);
 }
 
 
-void displayStats(){
-  translate(width-230,40);
+void displayStats(){ 
+  SpeedBtn.text = "Speed: "+speed;
+  SpeedBtn.display();
+  minusSpeed.display();
+  plusSpeed.display();
+  bestBtn.display();
+  fill(255);
+  translate(width-135,40);
   textSize(40);
   text("Statistics", 0, 0);
   textSize(15);
@@ -163,15 +180,29 @@ void displayStats(){
   translate(0, 20);
   text("Score: "+counter,0, 0);
   translate(0, 20);
-  text("Mean Fitness: "+meanFitness(),0, 0);
+  text("Mean Fitness (Alive): "+round(meanFitness()),0, 0);
+  translate(0, 20);
+  text("Mean lifespan (Alltime): "+round(meanLifespan()),0,0);
   translate(0, 40);
   text("Best Neural Network: ",0,0);
-  NMatrix[] hidden = bestBird.nn.getNetwork();
   translate(0, 20);
-  text("Hidden layers: "+hidden.length,0,0);
-  for(int i = 0; i < hidden.length; i++){
+  text("Hidden layers: "+bestEver.hidden.length,0,0);
+  for(int i = 0; i < bestEver.hidden.length; i++){
     translate(0, 20);
-    text("Hidden "+(i+1)+": "+hidden[i].dimension()[0]+" nodes",0,0);
+    text("Hidden "+(i+1)+": "+bestEver.hidden[i]+" nodes",0,0);
+  }
+  translate(0, 20);
+}
+
+float meanLifespan(){
+  if(scoreHistory.size() == 0){
+    return 0;
+  } else {
+    float sum = 0;
+    for(int score : scoreHistory){
+      sum += score;
+    }
+    return sum / scoreHistory.size();
   }
 }
 
@@ -186,6 +217,7 @@ float meanFitness(){
 
 void resetGame(){
   pipes = new ArrayList<Pipe>();
+  bestEver.y = birdCanvas.height/2;
   counter = 0;
 }
 
@@ -193,11 +225,11 @@ void resetGame(){
 void nextGeneration(){
   generation++;
   resetGame();
+  scoreHistory.add(counter);
   
   allBirds = normalizeFitness(allBirds);
   activeBirds = new ArrayList<Bird>(generate(allBirds));
   allBirds = new ArrayList<Bird>(activeBirds);
-  bestBird = allBirds.get(0);
 }
 
 // Generate new population
@@ -214,10 +246,12 @@ ArrayList<Bird> generate(ArrayList<Bird> oldPopulation){
 ArrayList<Bird> normalizeFitness(ArrayList<Bird> birds){
   float sum = 0;
   for(int i = 0; i < birds.size(); i++){
-    sum += birds.get(i).fitness();
+    if(birds.get(i).fitness() > 0){
+      sum += sq(birds.get(i).fitness());
+    }
   }
   for(int i = 0; i < birds.size(); i++){
-    birds.get(i).normFitness = birds.get(i).score / sum;
+    birds.get(i).normFitness = birds.get(i).score > 0 ? birds.get(i).score / sum : 0;
   }
   
   return birds;
@@ -227,14 +261,27 @@ Bird poolSelection(ArrayList<Bird> birds){
   // Natural Selection algorithm for selecting next bird
   float r = random(1);
   int i = 0;
+  int j = 0;
   do {
-    i = int(random(birds.size()-1));
-    r -= birds.get(i).normFitness;
-  } while(r > 0);
-  return birds.get(i).copy();
+    j = int(random(birds.size()));
+    r -= birds.get(j).normFitness;
+    i++;
+  } while(r > 0 && i < birds.size());
+  i--;
+  if(i >= birds.size()/2) { return new Bird(); }
+  return birds.get(j).copy();
 }
 
 void mousePressed(){
-  // Toggle best bird
-  //toggleState();
+  if(plusSpeed.withinBounds(mouseX, mouseY) && speed <= 256) {
+    if(speed == 0) { speed = 1; }
+    else { speed *= 2; }
+  }
+  if(minusSpeed.withinBounds(mouseX, mouseY)){
+    if(speed == 1){ speed = 0; }
+    else { speed /= 2; }
+  }
+  if(bestBtn.withinBounds(mouseX,mouseY)){
+    toggleState();
+  }
 }

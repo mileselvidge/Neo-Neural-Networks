@@ -1,7 +1,7 @@
 # Neo Neural Networks (NNN)
 ### _Neural Networks and Matrix Mathematics for Java_
 
-Neo is a basic machine learning library for Java written from the ground up. Neo has the ability to cretae and operate on large abstract matrices, including powerful operations like the matrix power and inverse functions. Central to Neo is a easy and effective way to write three layered Artificial Neural Networks that can easily be created, trained and queried in any Java project, and has been adapted with the Processing IDE in mind. 
+Neo is a basic machine learning library for Java written from the ground up. Neo has the ability to cretae and operate on large abstract matrices, including powerful operations like the matrix power and inverse functions. Central to Neo is a easy and effective way to write multi-layered Artificial Neural Networks that can easily be created, trained and queried in any Java project, and has been adapted with the Processing IDE in mind. 
 
 This project is just beginning and I intend to perusing it much further. Many of the concepts I explored whilst creating this project are new and exciting to me as I am 17 years old. Any input, suggests or help will be welcome!
 

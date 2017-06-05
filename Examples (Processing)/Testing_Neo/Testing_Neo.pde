@@ -20,7 +20,7 @@ int epochs = 1;
 
 // Configure network
 int totIn = 784;
-int totHid = 256;
+int[] totHid = {256};
 int totOut = 10;
 
 // Learning rate
